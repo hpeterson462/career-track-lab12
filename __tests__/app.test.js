@@ -15,10 +15,13 @@ describe('user routes', () => {
       .send({
         id: expect.any(String),
         email: 'h@h.com',
+        password: '1234',
+        profilePhotoUrl: 'www.photo.com'
       });
     expect(response.body).toEqual({
       id: expect.any(String),
-      email: 'h@h.com'
+      email: 'h@h.com',
+      profilePhotoUrl: 'www.photo.com'
     });
   });
 });
