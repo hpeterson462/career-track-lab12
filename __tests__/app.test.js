@@ -45,4 +45,30 @@ describe('user routes', () => {
       profilePhotoUrl: 'www.photo.com'
     });
   });
+
+  it('verifies user via GET', async () => {
+    const agent = request.agent(app);
+    await agent
+      .post('/api/v1/auth/signup')
+      .send({
+        email: 'h@h.com',
+        password: '1234',
+        profilePhotoUrl: 'www.photo.com'
+      });
+    const response = await agent
+      .get('/api/v1/auth/verify');
+
+    expect(response.body).toEqual({
+      id: expect.any(String),
+      email: 'h@h.com',
+      profilePhotoUrl: 'www.photo.com'
+    });
+    const responseWithoutUser = await request(app)
+      .get('/api/v1/auth/verify');
+
+    expect(responseWithoutUser.body).toEqual({
+      status: 500,
+      message: 'jwt must be provided'
+    });
+  });
 });
